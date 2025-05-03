@@ -1,0 +1,13 @@
+<launch>
+  <!-- 1. 启动 MAVROS -->
+  <include file="$(find mavros)/launch/px4.launch" />
+
+  <!-- 2. 启动 Realsense2 相机 -->
+  <include file="$(find realsense2_camera)/launch/rs_camera.launch" />
+
+  <!-- 3. 启动 VINS -->
+  <node pkg="vins" type="vins_node" name="vins_estimator" output="screen" args="/home/cwkj/UAV_Swarm_Platform/src/VINS-Fusion/config/realsense_d435i/realsense_stereo_imu_config.yaml" />
+</launch>
+
+
+

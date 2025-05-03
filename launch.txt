@@ -1,0 +1,30 @@
+更新环境变量
+source devel/setup.bash
+
+仿真px4运行mavros
+roslaunch px4 mavros_posix_sitl.launch
+
+实机px4运行mavros
+roslaunch mavros px4.launch
+
+运行地面站API
+rosrun offboard_run offboard_run_node
+
+运行yolov5
+roslaunch yolov5_ros detect_ros.launch
+
+运行跟踪算法
+rosrun target_track target_track_node
+
+
+运行VINS
+roslaunch realsense2_camera rs_camera.launch
+rosrun vins vins_node ~/UAV_Swarm_Platform/src/VINS-Fusion/config/realsense_d435i/realsense_stereo_imu_config.yaml
+rosrun loop_fusion loop_fusion_node ~/UAV_Swarm_Platform/src/VINS-Fusion/config/realsense_d435i/realsense_stereo_imu_config.yaml
+roslaunch vins vins_rviz.launch
+
+无人机定位模块一键启动
+roslaunch uav_bringup vins.launch
+
+vins接入px4作为外部定位信息
+rosrun offboard_run vins_to_mavros
