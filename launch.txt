@@ -15,7 +15,7 @@ roslaunch yolov5_ros detect_ros.launch
 
 运行跟踪算法
 rosrun target_track target_track_node
-
+rosrun target_track depth_track
 
 运行VINS
 roslaunch realsense2_camera rs_camera.launch

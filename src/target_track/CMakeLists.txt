@@ -13,6 +13,9 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
   message_generation
+  sensor_msgs
+  cv_bridge
+  image_geometry
 )
 
 ## System dependencies are found with CMake's conventions
@@ -107,7 +110,7 @@ generate_messages(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES target_track
- CATKIN_DEPENDS geometry_msgs mavros_msgs roscpp std_msgs message_runtime
+ CATKIN_DEPENDS geometry_msgs mavros_msgs roscpp std_msgs message_runtime cv_bridge image_geometry sensor_msgs
 #  DEPENDS system_lib
 )
 
@@ -120,6 +123,7 @@ catkin_package(
 include_directories(
 # include
   ${catkin_INCLUDE_DIRS}
+  ${OpenCV_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -210,4 +214,10 @@ include_directories(
 add_executable(${PROJECT_NAME}_node src/yolov5_track.cpp)
 target_link_libraries(${PROJECT_NAME}_node
   ${catkin_LIBRARIES}
+)
+
+add_executable(depth_track src/depth_track.cpp)
+target_link_libraries(depth_track
+  ${catkin_LIBRARIES}
+  ${OpenCV_LIBRARIES}
 )

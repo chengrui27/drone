@@ -15,18 +15,18 @@ bool captured = false;
 int x, y;
 float d, focus_d;
 float kp_yaw = 0.5;
-float kp_x = 0.5;
+float kp_x = 0.8;
 float kp_z = 0.5;
 geometry_msgs::TwistStamped target_vel;
 target_track::BoundingBoxes boxes;
 void target_cb(const target_track::BoundingBoxes::ConstPtr& msg){
     // boxes = *msg;
     for(const auto& box : msg->bounding_boxes){
-        if(box.Class == "bottle"){           
+        if(box.Class == "person"){           
             lostCount = 0;
             x = (box.xmin + box.xmax) / 2;
             y = (box.ymin + box.ymax) / 2;
-            d = box.ymax - box.ymin;
+            d = box.xmax - box.xmin;
             focus_area[0] = x;
             focus_area[1] = y;
             focus_d = d;
@@ -72,13 +72,20 @@ int main(int argc, char **argv)
         if(lostCount > 7)  captured = false;
         if(captured == false){
             target_vel.twist.angular.z = 0;
+            target_vel.twist.angular.y = 0;
+            target_vel.twist.angular.x = 0;
             target_vel.twist.linear.z = 0;
+            target_vel.twist.linear.y = 0;
             target_vel.twist.linear.x = 0;
             ROS_INFO("lost");
         }else if(captured == true){
             target_vel.twist.angular.z = kp_yaw * (focus_area[0] - 320) * -0.005;
+            target_vel.twist.angular.y = 0;
+            target_vel.twist.angular.x = 0;
             target_vel.twist.linear.z = kp_z * (focus_area[1] - 240) * -0.005;
             target_vel.twist.linear.x = kp_x * (1.0 - focus_d/180.0);
+            target_vel.twist.linear.y = 0;
+            // target_vel.twist.linear.x = 0;
         }
         vel_pub.publish(target_vel);
         ros::spinOnce();

@@ -71,7 +71,7 @@ def image_cb(msg, cv_bridge, yolov5_param, color_classes, image_pub):
         bounding_box.Class = box[-1]
 
         # 只检测行人(减少检测框的数量，以减轻目标跟踪节点回调函数的负担)
-        if bounding_box.Class != "bottle":
+        if bounding_box.Class != "person":
             continue
         
         # 放入box队列中
